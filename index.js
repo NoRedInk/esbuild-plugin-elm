@@ -32,7 +32,10 @@ module.exports = ({ optimize = isProd(), debug, pathToElm: pathToElm_ } = {}) =>
     };
 
     build.onResolve({ filter: fileFilter }, args => ({
-      path: path.join(args.resolveDir, args.path),
+      // We make this path relative, althought it won't map properly to the filesystem in the
+      // sourcemap, because otherwise, our assets will have a different git sha in different
+      // machines
+      path: path.relative(".", path.join(args.resolveDir, args.path)),
       namespace,
     }))
 
